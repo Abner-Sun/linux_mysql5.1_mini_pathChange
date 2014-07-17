@@ -32,7 +32,7 @@
 #define INNODB_COMPATIBILITY_HOOKS
 
 //sfh add  , this declaration is used to save the mysql_home dir from  parameters of mysqld mian function.
-extern char *DEFAULT_MYSQL_HOME_DirPath;
+// extern char *DEFAULT_MYSQL_HOME_DirPath;
 
 #ifdef __CYGWIN__
 /* We use a Unix API, so pretend it's not Windows */

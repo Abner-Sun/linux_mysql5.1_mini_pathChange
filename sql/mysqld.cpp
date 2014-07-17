@@ -4644,7 +4644,7 @@ int main(int argc, char **argv)
   	printf("error can not apply memory space for DEFAULT_MYSQL_HOME_DirPath\n"); 
 	exit 1;
   	}
-  (void) strmake(DEFAULT_MYSQL_HOME_DirPath, argv[1], sizeof(DEFAULT_MYSQL_HOME_DirPath)-1);
+  (void) strmake(DEFAULT_MYSQL_HOME_DirPath, argv[1], strlen(DEFAULT_MYSQL_HOME_DirPath)-1);
 //sfh add end
 
 
