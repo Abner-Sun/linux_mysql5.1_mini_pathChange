@@ -7,9 +7,12 @@ include $(OUTPUT)/rules.mk
 #CONFIG_H_FILE:=../include/linux_mysql_config.h
 #DEFAULT_CHARSET_HOME=/usr/local/mysql
 DEFAULT_BASEDIR:=/usr/local/mysql
-MYSQLDATAdir:=/usr/local/mysql/var
-SHAREDIR=/usr/local/mysql/share/mysql
-PLUGINDIR=/usr/local/mysql/lib/mysql/plugin
+# sfh add MYSQLDATAdir:=/usr/local/mysql/var
+MYSQLDATAdir:="var/"
+# sfh add SHAREDIR=/usr/local/mysql/share/mysql
+SHAREDIR="share/"
+# sfh add PLUGINDIR=/usr/local/mysql/lib/mysql/plugin
+PLUGINDIR="lib/mysql/plugin"
 
 
 #lex_hash.h:	gen_lex_hash.cc lex.h
@@ -24,11 +27,12 @@ LIBLDFLAGS := -Wl,--version-script -Wl,symbol_export -lpthread -lrt
 LIBVERSION:=1.0
 LIBVERSION_SUB:=5
 STATICLIB:= Y
-EXTRACFLAGS +=  -I../zlib -I. -I../regex -DMYSQL_SERVER -DDEFAULT_MYSQL_HOME=\"$(DEFAULT_BASEDIR)\" \
+EXTRACFLAGS +=  -I../zlib -I. -I../regex -DMYSQL_SERVER  \
   				-DMYSQL_DATADIR="\"$(MYSQLDATAdir)\"" \
 				-DSHAREDIR="\"$(SHAREDIR)\"" \
 				-DPLUGINDIR=\"$(PLUGINDIR)\" \
 				-DHAVE_EVENT_SCHEDULER -DHAVE_CONFIG_H
+# sfh add 		-DDEFAULT_MYSQL_HOME=\"$(DEFAULT_BASEDIR)\"  I redefine this as a global variable in head file my_global.h
 LIBSRCS := ha_ndbcluster.cpp \
 			ha_ndbcluster_binlog.cpp \
 			ha_ndbcluster_cond.cpp

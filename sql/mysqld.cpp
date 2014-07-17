@@ -59,6 +59,10 @@
 
 #define mysqld_charset &my_charset_latin1
 
+//sfh add  , this defination is used to save the mysql_home dir from  parameters of mysqld mian function.
+char *DEFAULT_MYSQL_HOME_DirPath;
+
+
 #ifdef HAVE_purify
 #define IF_PURIFY(A,B) (A)
 #else
@@ -4633,6 +4637,14 @@ int main(int argc, char **argv)
     need to have an  unique  named  hEventShudown  through the
     application PID e.g.: MySQLShutdown1890; MySQLShutdown2342
   */
+
+  if((DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argc[0])+1)*sizeof(char)))==NULL)
+  	{
+  	printf("error can not apply memory space for DEFAULT_MYSQL_HOME_DirPath\n"); 
+	exit 1;
+  	}
+  (void) strmake(DEFAULT_MYSQL_HOME_DirPath, argv[0], sizeof(DEFAULT_MYSQL_HOME_DirPath)-1);
+
   int10_to_str((int) GetCurrentProcessId(),strmov(shutdown_event_name,
                                                   "MySQLShutdown"), 10);
 
@@ -7955,7 +7967,8 @@ static int mysql_init_variables(void)
 #else
   const char *tmpenv;
   if (!(tmpenv = getenv("MY_BASEDIR_VERSION")))
-    tmpenv = DEFAULT_MYSQL_HOME;
+//sfh add    tmpenv = DEFAULT_MYSQL_HOME;
+		tmpenv = DEFAULT_MYSQL_HOME_DirPath;
   (void) strmake(mysql_home, tmpenv, sizeof(mysql_home)-1);
 #endif
   return 0;
@@ -8786,10 +8799,13 @@ static void set_server_version(void)
 static char *get_relative_path(const char *path)
 {
   if (test_if_hard_path(path) &&
-      is_prefix(path,DEFAULT_MYSQL_HOME) &&
-      strcmp(DEFAULT_MYSQL_HOME,FN_ROOTDIR))
+//sfh add      is_prefix(path,DEFAULT_MYSQL_HOME) &&
+	  is_prefix(path,DEFAULT_MYSQL_HOME_DirPath) &&
+//sfh add      strcmp(DEFAULT_MYSQL_HOME,FN_ROOTDIR))
+	   strcmp(DEFAULT_MYSQL_HOME_DirPath,FN_ROOTDIR))
   {
-    path+=(uint) strlen(DEFAULT_MYSQL_HOME);
+//sfh add    path+=(uint) strlen(DEFAULT_MYSQL_HOME);
+	path+=(uint) strlen(DEFAULT_MYSQL_HOME_DirPath);
     while (*path == FN_LIBCHAR)
       path++;
   }
