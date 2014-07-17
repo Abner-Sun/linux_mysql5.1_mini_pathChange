@@ -4638,12 +4638,15 @@ int main(int argc, char **argv)
     application PID e.g.: MySQLShutdown1890; MySQLShutdown2342
   */
 
-  if((DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argc[0])+1)*sizeof(char)))==NULL)
+//sfh add
+  if((DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argv[1])+1)*sizeof(char)))==NULL)
   	{
   	printf("error can not apply memory space for DEFAULT_MYSQL_HOME_DirPath\n"); 
 	exit 1;
   	}
-  (void) strmake(DEFAULT_MYSQL_HOME_DirPath, argv[0], sizeof(DEFAULT_MYSQL_HOME_DirPath)-1);
+  (void) strmake(DEFAULT_MYSQL_HOME_DirPath, argv[1], sizeof(DEFAULT_MYSQL_HOME_DirPath)-1);
+//sfh add end
+
 
   int10_to_str((int) GetCurrentProcessId(),strmov(shutdown_event_name,
                                                   "MySQLShutdown"), 10);
