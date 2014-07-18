@@ -4638,14 +4638,15 @@ int main(int argc, char **argv)
     application PID e.g.: MySQLShutdown1890; MySQLShutdown2342
   */
 
-//sfh add
-  if((DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argv[1])+1)*sizeof(char)))==NULL)
+/*sfh add
+  DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argv[1])+1)*sizeof(char));
+  if(DEFAULT_MYSQL_HOME_DirPath==NULL)
   	{
   	printf("error can not apply memory space for DEFAULT_MYSQL_HOME_DirPath\n"); 
 	exit 1;
   	}
-  (void) strmake(DEFAULT_MYSQL_HOME_DirPath, argv[1], strlen(DEFAULT_MYSQL_HOME_DirPath)-1);
-//sfh add end
+  // (void) strcpy(DEFAULT_MYSQL_HOME_DirPath, argv[1]);
+sfh add end*/
 
 
   int10_to_str((int) GetCurrentProcessId(),strmov(shutdown_event_name,
@@ -4663,7 +4664,16 @@ int main(int argc, char **argv)
 
     if (argc == 2)
     {
-      if (!default_service_handling(argv, MYSQL_SERVICENAME, MYSQL_SERVICENAME,
+	  //sfh add 
+	  DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argv[1])+1)*sizeof(char));
+  	  if(DEFAULT_MYSQL_HOME_DirPath==NULL)
+  	  {
+  		printf("error can not apply memory space for DEFAULT_MYSQL_HOME_DirPath\n"); 
+		exit 1;
+  	  }
+	  (void) strcpy(DEFAULT_MYSQL_HOME_DirPath, argv[1]);
+	  //sfh add  end
+	  if (!default_service_handling(argv, MYSQL_SERVICENAME, MYSQL_SERVICENAME,
 				   file_path, "", NULL))
 	return 0;
       if (Service.IsService(argv[1]))        /* Start an optional service */

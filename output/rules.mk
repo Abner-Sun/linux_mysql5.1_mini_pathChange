@@ -204,6 +204,7 @@ endif
 rules_clean:
 	-rm -f $(CONFIG_H_FILE) $(EXENAME) $(REALLIBNAME) $(EXEOBJS) $(LIBOBJS) $(EXEDEPS) $(LIBDEPS) $(GCOVFILES)
 	-[ -z $(EXENAME) ] || rm -f $(TOP)/bin/$(EXENAME)
+	-[ -z $(EXENAMEP) ] || rm -f $(TOP)/bin/$(EXENAMEP`)
 	-[ -z $(LIBNAME) ] || rm -f $(TOP)/lib/$(LIBNAME).*
 
 rules_install: $(LIBNAME) $(EXENAME)
