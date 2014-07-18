@@ -3925,13 +3925,13 @@ a file name for --log-bin-index option", opt_binlog_index_name);
       unireg_abort(ho_error);
     my_getopt_skip_unknown= TRUE;
 
-    if (defaults_argc)
+   /* sfh add  if (defaults_argc)
     {
       fprintf(stderr, "%s: Too many arguments (first extra is '%s').\n"
               "Use --verbose --help to get a list of available options\n",
               my_progname, *tmp_argv);
       unireg_abort(1);
-    }
+    } */
   }
 
   /* if the errmsg.sys is not loaded, terminate to maintain behaviour */
