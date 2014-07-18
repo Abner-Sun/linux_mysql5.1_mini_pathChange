@@ -60,7 +60,7 @@
 #define mysqld_charset &my_charset_latin1
 
 //sfh add  , this defination is used to save the mysql_home dir from  parameters of mysqld mian function.
-char *DEFAULT_MYSQL_HOME_DirPath;
+const char *DEFAULT_MYSQL_HOME_DirPath;
 
 
 #ifdef HAVE_purify
@@ -1570,6 +1570,7 @@ static struct passwd *check_user(const char *user)
   }
   if (!user)
   {
+  	return NULL; /*sfh add*/
     if (!opt_bootstrap)
     {
       sql_print_error("Fatal error: Please read \"Security\" section of the manual to find out how to run mysqld as root!\n");
@@ -4226,6 +4227,17 @@ int main(int argc, char **argv)
   ld_assume_kernel_is_set= (getenv("LD_ASSUME_KERNEL") != 0);
 #endif
 
+  //sfh add
+  if(argc > 1) {
+  	DEFAULT_MYSQL_HOME_DirPath=strdup(argv[1]);
+  }
+  if(DEFAULT_MYSQL_HOME_DirPath==NULL)
+  {
+	printf("error DEFAULT_MYSQL_HOME_DirPath\n"); 
+	exit(1);
+  }
+  //sfh add  end
+
   MY_INIT(argv[0]);		// init my_sys library & pthreads
   /* nothing should come before this line ^^^ */
 
@@ -4638,17 +4650,6 @@ int main(int argc, char **argv)
     application PID e.g.: MySQLShutdown1890; MySQLShutdown2342
   */
 
-/*sfh add
-  DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argv[1])+1)*sizeof(char));
-  if(DEFAULT_MYSQL_HOME_DirPath==NULL)
-  	{
-  	printf("error can not apply memory space for DEFAULT_MYSQL_HOME_DirPath\n"); 
-	exit 1;
-  	}
-  // (void) strcpy(DEFAULT_MYSQL_HOME_DirPath, argv[1]);
-sfh add end*/
-
-
   int10_to_str((int) GetCurrentProcessId(),strmov(shutdown_event_name,
                                                   "MySQLShutdown"), 10);
 
@@ -4664,15 +4665,6 @@ sfh add end*/
 
     if (argc == 2)
     {
-	  //sfh add 
-	  DEFAULT_MYSQL_HOME_DirPath=(char *)malloc((strlen(argv[1])+1)*sizeof(char));
-  	  if(DEFAULT_MYSQL_HOME_DirPath==NULL)
-  	  {
-  		printf("error can not apply memory space for DEFAULT_MYSQL_HOME_DirPath\n"); 
-		exit 1;
-  	  }
-	  (void) strcpy(DEFAULT_MYSQL_HOME_DirPath, argv[1]);
-	  //sfh add  end
 	  if (!default_service_handling(argv, MYSQL_SERVICENAME, MYSQL_SERVICENAME,
 				   file_path, "", NULL))
 	return 0;
