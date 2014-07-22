@@ -1803,6 +1803,8 @@ static void network_init(void)
   */
   if (mysqld_unix_port[0] && !opt_bootstrap)
   {
+    //sfh add
+   // printf("1111111111111111111\n");
     DBUG_PRINT("general",("UNIX Socket is %s",mysqld_unix_port));
 
     if (strlen(mysqld_unix_port) > (sizeof(UNIXaddr.sun_path) - 1))
@@ -1826,10 +1828,14 @@ static void network_init(void)
     if (bind(unix_sock, my_reinterpret_cast(struct sockaddr *) (&UNIXaddr),
 	     sizeof(UNIXaddr)) < 0)
     {
-      sql_perror("Can't start server : Bind on unix socket"); /* purecov: tested */
+		//sfh add
+     // printf("the unix_sock is %d,the path is %s\n",unix_sock,UNIXaddr.sun_path);
+	  sql_perror("Can't start server : Bind on unix socket"); /* purecov: tested */
       sql_print_error("Do you already have another mysqld server running on socket: %s ?",mysqld_unix_port);
       unireg_abort(1);					/* purecov: tested */
     }
+	//sfh add
+	  //printf("the unix_sock is %d,the path is %s\n",unix_sock,UNIXaddr.sun_path);
     umask(((~my_umask) & 0666));
 #if defined(S_IFSOCK) && defined(SECURE_SOCKETS)
     (void) chmod(mysqld_unix_port,S_IFSOCK);	/* Fix solaris 2.6 bug */
@@ -4228,7 +4234,7 @@ int main(int argc, char **argv)
 #endif
 
   //sfh add
-  if(argc > 1) {
+  if(argc > 1){
   	DEFAULT_MYSQL_HOME_DirPath=strdup(argv[1]);
   }
   if(DEFAULT_MYSQL_HOME_DirPath==NULL)
