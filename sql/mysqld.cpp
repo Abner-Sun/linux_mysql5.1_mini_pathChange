@@ -4455,8 +4455,9 @@ we force server id to 2, but this MySQL server will not act as a slave.");
 
   execute_ddl_log_recovery();
 
-  if (Events::init(opt_noacl || opt_bootstrap))
-    unireg_abort(1);
+  /*sfh add  if (Events::init(opt_noacl || opt_bootstrap))
+    unireg_abort(1);*/
+    printf("change 11111\n");
 
   if (opt_bootstrap)
   {

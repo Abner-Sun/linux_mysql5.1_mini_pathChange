@@ -44,6 +44,8 @@
 
 int my_sync(File fd, myf my_flags)
 {
+  printf("I set this function as NULL and let it return 0 directly\n");
+  return 0; //sfh add
   int res;
   DBUG_ENTER("my_sync");
   DBUG_PRINT("my",("Fd: %d  my_flags: %d", fd, my_flags));
