@@ -55,6 +55,7 @@ File my_open(const char *FileName, int Flags, myf MyFlags)
                                      EE_FILENOTFOUND, MyFlags));
   }
 #ifndef __WIN__
+
   if (Flags & O_SHARE)
     fd = sopen((char *) FileName, (Flags & ~O_SHARE) | O_BINARY, SH_DENYNO,
 	       MY_S_IREAD | MY_S_IWRITE);
@@ -62,13 +63,18 @@ File my_open(const char *FileName, int Flags, myf MyFlags)
     fd = open((char *) FileName, Flags | O_BINARY,
 	      MY_S_IREAD | MY_S_IWRITE);
 #else
+
+
   fd= my_sopen((char *) FileName, (Flags & ~O_SHARE) | O_BINARY, SH_DENYNO,
 	       MY_S_IREAD | MY_S_IWRITE);
 #endif
 
 #elif !defined(NO_OPEN_3)
-  fd = open(FileName, Flags, my_umask);	/* Normal unix */
+
+
+  fd = open(FileName, Flags, my_umask);	/* Normal unix */ //linux go this way
 #else
+
   fd = open((char *) FileName, Flags);
 #endif
 

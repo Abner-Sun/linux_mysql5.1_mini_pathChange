@@ -1803,8 +1803,7 @@ static void network_init(void)
   */
   if (mysqld_unix_port[0] && !opt_bootstrap)
   {
-    //sfh add
-   // printf("1111111111111111111\n");
+   
     DBUG_PRINT("general",("UNIX Socket is %s",mysqld_unix_port));
 
     if (strlen(mysqld_unix_port) > (sizeof(UNIXaddr.sun_path) - 1))
@@ -1828,14 +1827,12 @@ static void network_init(void)
     if (bind(unix_sock, my_reinterpret_cast(struct sockaddr *) (&UNIXaddr),
 	     sizeof(UNIXaddr)) < 0)
     {
-		//sfh add
-     // printf("the unix_sock is %d,the path is %s\n",unix_sock,UNIXaddr.sun_path);
+		
 	  sql_perror("Can't start server : Bind on unix socket"); /* purecov: tested */
       sql_print_error("Do you already have another mysqld server running on socket: %s ?",mysqld_unix_port);
       unireg_abort(1);					/* purecov: tested */
     }
-	//sfh add
-	  //printf("the unix_sock is %d,the path is %s\n",unix_sock,UNIXaddr.sun_path);
+	
     umask(((~my_umask) & 0666));
 #if defined(S_IFSOCK) && defined(SECURE_SOCKETS)
     (void) chmod(mysqld_unix_port,S_IFSOCK);	/* Fix solaris 2.6 bug */
@@ -4455,9 +4452,9 @@ we force server id to 2, but this MySQL server will not act as a slave.");
 
   execute_ddl_log_recovery();
 
-  /*sfh add  if (Events::init(opt_noacl || opt_bootstrap))
-    unireg_abort(1);*/
-    printf("change 11111\n");
+  if (Events::init(opt_noacl || opt_bootstrap))
+    unireg_abort(1);
+    
 
   if (opt_bootstrap)
   {
@@ -4905,7 +4902,7 @@ void create_thread_to_handle_connection(THD *thd)
 static void create_new_thread(THD *thd)
 {
   NET *net=&thd->net;
-  DBUG_ENTER("create_new_thread");
+  printf("create_new_thread\n"); //sfh add
 
   if (protocol_version > 9)
     net->return_errno=1;
@@ -5063,6 +5060,7 @@ pthread_handler_t handle_connections_sockets(void *arg __attribute__((unused)))
       size_socket length=sizeof(struct sockaddr_in);
       new_sock = accept(sock, my_reinterpret_cast(struct sockaddr *) (&cAddr),
 			&length);
+	  printf("accept return %d,length is %d \n",new_sock,length);//sfh add
 #ifdef __NETWARE__ 
       // TODO: temporary fix, waiting for TCP/IP fix - DEFECT000303149
       if ((new_sock == INVALID_SOCKET) && (socket_errno == EINVAL))

@@ -303,6 +303,7 @@ int vio_close(Vio * vio)
   int r=0;
   DBUG_ENTER("vio_close");
 
+
  if (vio->type != VIO_CLOSED)
   {
     DBUG_ASSERT(vio->type ==  VIO_TYPE_TCPIP ||

@@ -314,7 +314,7 @@
 /* #undef HAVE_FCONVERT */
 
 /* Define to 1 if you have the `fdatasync' function. */
-#define HAVE_FDATASYNC 1
+//#define HAVE_FDATASYNC 1 //sfh add
 
 /* Define to 1 if you have the `fedisableexcept' function. */
 #define HAVE_FEDISABLEEXCEPT 1
